@@ -7,7 +7,7 @@ CREATE TABLE app_user(
 
 CREATE TABLE project(
     id UUID NOT NULL PRIMARY KEY,
-    user_id UUID REFERENCES app_user(id) NOT NULL,
+    app_user_id UUID REFERENCES app_user(id) NOT NULL,
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
     created_at TIMESTAMPTZ NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE task(
     project_id UUID REFERENCES project(id) NOT NULL,
     name VARCHAR(50) NOT NULL,
     status VARCHAR(8) NOT NULL,
-    assignee UUID REFERENCES app_user(id),
+    app_user_id UUID REFERENCES app_user(id),
     description TEXT,
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ
