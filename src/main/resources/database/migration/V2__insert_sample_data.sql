@@ -12,3 +12,9 @@ VALUES ('1755aef0-7fc6-472e-95b2-7f0c5e8cb838', '6183ce4c-2894-40f2-a20c-9717599
 
 INSERT INTO task_comment(id, app_user_id, task_id, title, content, created_at, updated_at)
 VALUES ('343a8041-f80c-486e-85a3-213163203344', '21bae819-bbf8-4e89-93c2-1f6d2ed95921', 'c0f2b16a-5179-4b27-90e5-530913416175', 'Erster Kommentar', 'Meine erste fertige Aufgabe in diesem Projekt', NOW(), null);
+
+INSERT INTO task_comment(id, app_user_id, task_id, title, content, created_at, updated_at)
+VALUES ('fb1cbb53-3243-429e-8444-e5b5f58eefa1', '21bae819-bbf8-4e89-93c2-1f6d2ed95921', '1755aef0-7fc6-472e-95b2-7f0c5e8cb838', 'Zweiter Kommentar', 'Meine zweite fertige Aufgabe in diesem Projekt', NOW(), null);
+
+INSERT INTO task_comment(id, app_user_id, task_id, title, content, created_at, updated_at)
+VALUES ('48d6310b-e449-4142-b242-d8d2d9289d95', '21bae819-bbf8-4e89-93c2-1f6d2ed95921', '1755aef0-7fc6-472e-95b2-7f0c5e8cb838', 'Dritter Kommentar', 'Mein dritter Kommentar in diesem Projekt', NOW(), null);

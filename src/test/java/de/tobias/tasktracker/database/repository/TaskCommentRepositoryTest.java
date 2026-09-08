@@ -4,9 +4,12 @@ import de.tobias.tasktracker.database.entity.AppUserEntity;
 import de.tobias.tasktracker.database.entity.ProjectEntity;
 import de.tobias.tasktracker.database.entity.TaskCommentEntity;
 import de.tobias.tasktracker.database.entity.TaskEntity;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 public class TaskCommentRepositoryTest {
@@ -15,6 +18,7 @@ public class TaskCommentRepositoryTest {
 	private TaskCommentRepository repository;
 
 	@Test
+	@Transactional
 	public void getTaskCommentFromDb() {
 		final TaskCommentEntity taskComment = repository.findAll().getFirst();
 		final TaskEntity task = taskComment.getTask();
@@ -24,5 +28,17 @@ public class TaskCommentRepositoryTest {
 		System.out.println(task);
 		System.out.println(project);
 		System.out.println(appUser);
+	}
+
+	@Test
+	@Transactional
+	public void getTaskCommentsFromDb() {
+		final List<TaskCommentEntity> comments = repository.findAllWithTasks();
+
+		System.out.println("Comments geladen: " + comments.size());
+
+		for (TaskCommentEntity comment : comments) {
+			System.out.println(comment.getTask().getName());
+		}
 	}
 }

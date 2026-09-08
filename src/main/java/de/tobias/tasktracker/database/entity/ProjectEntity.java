@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -13,12 +13,10 @@ import java.util.UUID;
 public class ProjectEntity {
 
 	@Id
-	@NotNull
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "app_user_id")
 	private AppUserEntity user;
 
@@ -29,8 +27,12 @@ public class ProjectEntity {
 
 	@NotNull
 	@Column(name = "created_at")
-	private Timestamp createdAt;
+	private Instant createdAt;
 
 	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	private Instant updatedAt;
+
+	public ProjectEntity() {
+		this.id =  UUID.randomUUID();
+	}
 }

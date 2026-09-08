@@ -1,10 +1,13 @@
 package de.tobias.tasktracker.database.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -13,8 +16,6 @@ import java.util.UUID;
 public class AppUserEntity {
 
 	@Id
-	@NotNull
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 
 	@NotNull
@@ -22,8 +23,12 @@ public class AppUserEntity {
 
 	@NotNull
 	@Column(name = "created_at")
-	private Timestamp createdAt;
+	private Instant createdAt;
 
 	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	private Instant updatedAt;
+
+	public AppUserEntity() {
+		this.id = UUID.randomUUID();
+	}
 }

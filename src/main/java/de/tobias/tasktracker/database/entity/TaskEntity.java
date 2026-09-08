@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -13,12 +13,10 @@ import java.util.UUID;
 public class TaskEntity {
 
 	@Id
-	@NotNull
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id")
 	private ProjectEntity project;
 
@@ -28,7 +26,7 @@ public class TaskEntity {
 	@NotNull
 	private String status;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "app_user_id")
 	private AppUserEntity user;
 
@@ -36,9 +34,13 @@ public class TaskEntity {
 
 	@NotNull
 	@Column(name = "created_at")
-	private Timestamp createdAt;
+	private Instant createdAt;
 
 	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	private Instant updatedAt;
+
+	public TaskEntity() {
+		this.id = UUID.randomUUID();
+	}
 }
 
