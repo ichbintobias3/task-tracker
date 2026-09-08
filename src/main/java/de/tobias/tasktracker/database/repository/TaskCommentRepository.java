@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface TaskCommentRepository extends JpaRepository<TaskCommentEntity, Long> {
+public interface TaskCommentRepository extends JpaRepository<TaskCommentEntity, UUID> {
 
 	@Query(value = "SELECT tc FROM TaskCommentEntity tc JOIN FETCH tc.task")
 	List<TaskCommentEntity> findAllWithTasks();

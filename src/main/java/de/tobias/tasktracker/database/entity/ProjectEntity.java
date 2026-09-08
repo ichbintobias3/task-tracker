@@ -33,6 +33,6 @@ public class ProjectEntity {
 	private Instant updatedAt;
 
 	public ProjectEntity() {
-		this.id =  UUID.randomUUID();
+		this.id = UUID.randomUUID();
 	}
 }
