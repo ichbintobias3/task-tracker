@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectConverter {
 
-	public ProjectResponseDto entityToDto(ProjectEntity entity) {
+	public ProjectResponseDto entityToResponseDto(ProjectEntity entity) {
 		ProjectResponseDto dto = new ProjectResponseDto();
+		dto.setId(String.valueOf(entity.getId()));
 		dto.setOwner(entity.getUser().getName());
 		dto.setName(entity.getName());
 		dto.setDescription(entity.getDescription());
@@ -19,21 +20,11 @@ public class ProjectConverter {
 		return dto;
 	}
 
-	public ProjectEntity dtoToEntity(ProjectRequestDto dto, AppUserEntity owner) {
+	public ProjectEntity requestDtoToEntity(ProjectRequestDto dto, AppUserEntity owner) {
 		ProjectEntity entity = new ProjectEntity();
 		entity.setUser(owner);
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		return entity;
-	}
-
-	public ProjectResponseDto entityToCreateResponseDto(ProjectEntity entity) {
-		ProjectResponseDto dto = new ProjectResponseDto();
-		dto.setOwner(entity.getUser().getName());
-		dto.setName(entity.getName());
-		dto.setDescription(entity.getDescription());
-		dto.setCreatedAt(entity.getCreatedAt());
-		dto.setUpdatedAt(entity.getUpdatedAt());
-		return dto;
 	}
 }

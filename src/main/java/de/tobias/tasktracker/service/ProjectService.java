@@ -33,22 +33,22 @@ public class ProjectService {
 		final List<ProjectEntity> projects = repository.findAllProjectsWithUsers();
 		final List<ProjectResponseDto> result = new ArrayList<>();
 
-		projects.forEach(p -> result.add(converter.entityToDto(p)));
+		projects.forEach(p -> result.add(converter.entityToResponseDto(p)));
 		return result;
 	}
 
 	public ProjectResponseDto createProject(ProjectRequestDto projectDto) {
 		final AppUserEntity adminUser = userService.findAdminUser();
 
-		final ProjectEntity newEntity = converter.dtoToEntity(projectDto, adminUser);
+		final ProjectEntity newEntity = converter.requestDtoToEntity(projectDto, adminUser);
 		final ProjectEntity savedEntity = repository.save(newEntity);
-		return converter.entityToCreateResponseDto(savedEntity);
+		return converter.entityToResponseDto(savedEntity);
 	}
 
 	public ProjectResponseDto getProjectById(UUID id) {
 		final Optional<ProjectEntity> result = repository.findById(id);
 		if (result.isPresent()) {
-			return converter.entityToDto(result.get());
+			return converter.entityToResponseDto(result.get());
 		} else {
 			throw new ProjectNotFoundException("Project with id " + id + " not found");
 		}
@@ -62,7 +62,7 @@ public class ProjectService {
 			oldEntity.setDescription(projectDto.getDescription());
 			oldEntity.setUpdatedAt(Instant.now());
 			final ProjectEntity updatedEntity = repository.save(oldEntity);
-			return converter.entityToCreateResponseDto(updatedEntity);
+			return converter.entityToResponseDto(updatedEntity);
 		} else  {
 			throw new ProjectNotFoundException("Project with id " + id + " not found");
 		}

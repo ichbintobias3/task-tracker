@@ -7,6 +7,7 @@ import java.time.Instant;
 @Data
 public class ProjectResponseDto {
 
+	private String id;
 	private String owner;
 	private String name;
 	private String description;
