@@ -1,6 +1,7 @@
 package de.tobias.tasktracker.util;
 
 import de.tobias.tasktracker.dto.ExceptionDto;
+import de.tobias.tasktracker.exception.ProjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -34,6 +35,16 @@ public class GlobalExceptionHandler {
 		dto.setTimestamp(Instant.now());
 		dto.setStatus(HttpStatus.BAD_REQUEST.value());
 		dto.setMessage(errors.getFirst().getDefaultMessage());
+		return dto;
+	}
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(ProjectNotFoundException.class)
+	public ExceptionDto handleException(ProjectNotFoundException exception) {
+		ExceptionDto dto = new ExceptionDto();
+		dto.setTimestamp(Instant.now());
+		dto.setStatus(HttpStatus.NOT_FOUND.value());
+		dto.setMessage(exception.getMessage());
 		return dto;
 	}
 }

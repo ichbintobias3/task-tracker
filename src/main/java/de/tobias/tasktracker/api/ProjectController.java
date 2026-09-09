@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -27,5 +28,10 @@ public class ProjectController {
 	@PostMapping
 	public CreateProjectResponseDto createProject(@RequestBody @Valid CreateProjectRequestDto dto) {
 		return service.createProject(dto);
+	}
+
+	@GetMapping("/{id}")
+	public ProjectDto getProjectById(@PathVariable UUID id) {
+		return service.getProjectById(id);
 	}
 }
