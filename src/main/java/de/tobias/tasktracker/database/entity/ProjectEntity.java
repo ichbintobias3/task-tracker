@@ -34,5 +34,6 @@ public class ProjectEntity {
 
 	public ProjectEntity() {
 		this.id = UUID.randomUUID();
+		this.createdAt = Instant.now();
 	}
 }

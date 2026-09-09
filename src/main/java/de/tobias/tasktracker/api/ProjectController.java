@@ -1,10 +1,11 @@
 package de.tobias.tasktracker.api;
 
+import de.tobias.tasktracker.dto.CreateProjectRequestDto;
+import de.tobias.tasktracker.dto.CreateProjectResponseDto;
 import de.tobias.tasktracker.dto.ProjectDto;
 import de.tobias.tasktracker.service.ProjectService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +22,10 @@ public class ProjectController {
 	@GetMapping
 	public List<ProjectDto> getProjects() {
 		return service.getAllProjects();
+	}
+
+	@PostMapping
+	public CreateProjectResponseDto createProject(@RequestBody @Valid CreateProjectRequestDto dto) {
+		return service.createProject(dto);
 	}
 }
