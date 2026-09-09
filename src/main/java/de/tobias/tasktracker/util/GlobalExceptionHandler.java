@@ -1,8 +1,10 @@
 package de.tobias.tasktracker.util;
 
 import de.tobias.tasktracker.dto.ExceptionDto;
+import de.tobias.tasktracker.exception.ProjectCreationException;
+import de.tobias.tasktracker.exception.ProjectDeletionException;
 import de.tobias.tasktracker.exception.ProjectNotFoundException;
-import org.springframework.dao.DataIntegrityViolationException;
+import de.tobias.tasktracker.exception.ProjectUpdateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,12 +19,12 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ExceptionDto handleException(DataIntegrityViolationException exception) {
+	@ExceptionHandler(ProjectCreationException.class)
+	public ExceptionDto handleException(ProjectCreationException exception) {
 		ExceptionDto dto = new ExceptionDto();
 		dto.setTimestamp(Instant.now());
 		dto.setStatus(HttpStatus.BAD_REQUEST.value());
-		dto.setMessage("The project name already exists.");
+		dto.setMessage(exception.getMessage());
 		return dto;
 	}
 
@@ -44,6 +46,16 @@ public class GlobalExceptionHandler {
 		ExceptionDto dto = new ExceptionDto();
 		dto.setTimestamp(Instant.now());
 		dto.setStatus(HttpStatus.NOT_FOUND.value());
+		dto.setMessage(exception.getMessage());
+		return dto;
+	}
+
+	@ResponseStatus(HttpStatus.CONFLICT)
+	@ExceptionHandler({ ProjectDeletionException.class, ProjectUpdateException.class })
+	public ExceptionDto handleException(RuntimeException exception) {
+		ExceptionDto dto = new ExceptionDto();
+		dto.setTimestamp(Instant.now());
+		dto.setStatus(HttpStatus.CONFLICT.value());
 		dto.setMessage(exception.getMessage());
 		return dto;
 	}

@@ -4,6 +4,7 @@ import de.tobias.tasktracker.dto.ProjectRequestDto;
 import de.tobias.tasktracker.dto.ProjectResponseDto;
 import de.tobias.tasktracker.service.ProjectService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class ProjectController {
 	}
 
 	@PostMapping
+	@ResponseStatus(value = HttpStatus.CREATED)
 	public ProjectResponseDto createProject(@RequestBody @Valid ProjectRequestDto dto) {
 		return service.createProject(dto);
 	}
@@ -37,5 +39,11 @@ public class ProjectController {
 	@PutMapping("/{id}")
 	public ProjectResponseDto updateProjectById(@PathVariable UUID id, @RequestBody @Valid ProjectRequestDto dto) {
 		return service.updateProjectById(id, dto);
+	}
+
+	@DeleteMapping("/{id}")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deleteProjectById(@PathVariable UUID id) {
+		service.deleteProjectById(id);
 	}
 }
