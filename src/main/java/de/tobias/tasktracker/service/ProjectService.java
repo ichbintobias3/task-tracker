@@ -4,12 +4,12 @@ import de.tobias.tasktracker.converter.ProjectConverter;
 import de.tobias.tasktracker.database.entity.AppUserEntity;
 import de.tobias.tasktracker.database.entity.ProjectEntity;
 import de.tobias.tasktracker.database.repository.ProjectRepository;
-import de.tobias.tasktracker.dto.CreateProjectRequestDto;
-import de.tobias.tasktracker.dto.CreateProjectResponseDto;
-import de.tobias.tasktracker.dto.ProjectDto;
+import de.tobias.tasktracker.dto.ProjectRequestDto;
+import de.tobias.tasktracker.dto.ProjectResponseDto;
 import de.tobias.tasktracker.exception.ProjectNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,15 +29,15 @@ public class ProjectService {
 		this.userService = userService;
 	}
 
-	public List<ProjectDto> getAllProjects() {
+	public List<ProjectResponseDto> getAllProjects() {
 		final List<ProjectEntity> projects = repository.findAllProjectsWithUsers();
-		final List<ProjectDto> result = new ArrayList<>();
+		final List<ProjectResponseDto> result = new ArrayList<>();
 
 		projects.forEach(p -> result.add(converter.entityToDto(p)));
 		return result;
 	}
 
-	public CreateProjectResponseDto createProject(CreateProjectRequestDto projectDto) {
+	public ProjectResponseDto createProject(ProjectRequestDto projectDto) {
 		final AppUserEntity adminUser = userService.findAdminUser();
 
 		final ProjectEntity newEntity = converter.dtoToEntity(projectDto, adminUser);
@@ -45,11 +45,25 @@ public class ProjectService {
 		return converter.entityToCreateResponseDto(savedEntity);
 	}
 
-	public ProjectDto getProjectById(UUID id) {
+	public ProjectResponseDto getProjectById(UUID id) {
 		final Optional<ProjectEntity> result = repository.findById(id);
 		if (result.isPresent()) {
 			return converter.entityToDto(result.get());
 		} else {
+			throw new ProjectNotFoundException("Project with id " + id + " not found");
+		}
+	}
+
+	public ProjectResponseDto updateProjectById(UUID id, ProjectRequestDto projectDto) {
+		final Optional<ProjectEntity> result = repository.findById(id);
+		if (result.isPresent()) {
+			ProjectEntity oldEntity = result.get();
+			oldEntity.setName(projectDto.getName());
+			oldEntity.setDescription(projectDto.getDescription());
+			oldEntity.setUpdatedAt(Instant.now());
+			final ProjectEntity updatedEntity = repository.save(oldEntity);
+			return converter.entityToCreateResponseDto(updatedEntity);
+		} else  {
 			throw new ProjectNotFoundException("Project with id " + id + " not found");
 		}
 	}

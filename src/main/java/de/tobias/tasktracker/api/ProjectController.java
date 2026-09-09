@@ -1,8 +1,7 @@
 package de.tobias.tasktracker.api;
 
-import de.tobias.tasktracker.dto.CreateProjectRequestDto;
-import de.tobias.tasktracker.dto.CreateProjectResponseDto;
-import de.tobias.tasktracker.dto.ProjectDto;
+import de.tobias.tasktracker.dto.ProjectRequestDto;
+import de.tobias.tasktracker.dto.ProjectResponseDto;
 import de.tobias.tasktracker.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +20,22 @@ public class ProjectController {
 	}
 
 	@GetMapping
-	public List<ProjectDto> getProjects() {
+	public List<ProjectResponseDto> getProjects() {
 		return service.getAllProjects();
 	}
 
 	@PostMapping
-	public CreateProjectResponseDto createProject(@RequestBody @Valid CreateProjectRequestDto dto) {
+	public ProjectResponseDto createProject(@RequestBody @Valid ProjectRequestDto dto) {
 		return service.createProject(dto);
 	}
 
 	@GetMapping("/{id}")
-	public ProjectDto getProjectById(@PathVariable UUID id) {
+	public ProjectResponseDto getProjectById(@PathVariable UUID id) {
 		return service.getProjectById(id);
+	}
+
+	@PutMapping("/{id}")
+	public ProjectResponseDto updateProjectById(@PathVariable UUID id, @RequestBody @Valid ProjectRequestDto dto) {
+		return service.updateProjectById(id, dto);
 	}
 }

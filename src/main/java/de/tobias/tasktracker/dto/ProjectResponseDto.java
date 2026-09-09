@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class CreateProjectResponseDto {
+public class ProjectResponseDto {
 
 	private String owner;
 	private String name;

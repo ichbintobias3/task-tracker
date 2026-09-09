@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CreateProjectRequestDto {
+public class ProjectRequestDto {
 
 	@NotBlank(message = "Project name is mandatory.")
 	private String name;
