@@ -1,10 +1,7 @@
 package de.tobias.tasktracker.util;
 
 import de.tobias.tasktracker.dto.ExceptionDto;
-import de.tobias.tasktracker.exception.ProjectCreationException;
-import de.tobias.tasktracker.exception.ProjectDeletionException;
-import de.tobias.tasktracker.exception.ProjectNotFoundException;
-import de.tobias.tasktracker.exception.ProjectUpdateException;
+import de.tobias.tasktracker.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,7 +38,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(ProjectNotFoundException.class)
+	@ExceptionHandler({ ProjectNotFoundException.class, TaskNotFoundException.class, UserNotFoundException.class })
 	public ExceptionDto handleException(ProjectNotFoundException exception) {
 		ExceptionDto dto = new ExceptionDto();
 		dto.setTimestamp(Instant.now());

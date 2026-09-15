@@ -41,6 +41,7 @@ public class TaskEntity {
 
 	public TaskEntity() {
 		this.id = UUID.randomUUID();
+		this.createdAt = Instant.now();
 	}
 }
 

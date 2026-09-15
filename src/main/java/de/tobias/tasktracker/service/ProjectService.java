@@ -62,6 +62,11 @@ public class ProjectService {
 		}
 	}
 
+	public ProjectEntity getProjectEntityById(UUID id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new ProjectNotFoundException("Project with id " + id + " not found"));
+	}
+
 	public ProjectResponseDto updateProjectById(UUID id, ProjectRequestDto projectDto) {
 		final Optional<ProjectEntity> result = repository.findById(id);
 		if (result.isEmpty()) {
