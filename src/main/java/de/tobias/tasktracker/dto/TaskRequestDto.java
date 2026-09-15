@@ -17,4 +17,6 @@ public class TaskRequestDto {
 
 	private UUID userId;
 	private String description;
+
+	private TaskStatus status;
 }

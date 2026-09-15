@@ -29,4 +29,9 @@ public class TaskController {
 	public TaskResponseDto getTaskById(@PathVariable UUID id) {
 		return service.getTaskById(id);
 	}
+
+	@PutMapping("/{id}")
+	public TaskResponseDto updateTaskById(@PathVariable UUID id, @RequestBody @Valid TaskRequestDto dto) {
+		return service.updateTaskById(id, dto);
+	}
 }

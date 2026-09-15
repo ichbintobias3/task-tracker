@@ -12,7 +12,7 @@ public class TaskResponseDto {
 	private UUID projectId;
 	private UUID userId;
 	private String name;
-	private String status;
+	private TaskStatus status;
 	private String description;
 	private Instant createdAt;
 	private Instant updatedAt;

@@ -29,7 +29,7 @@ public class TaskConverter {
 		TaskEntity taskEntity = new TaskEntity();
 		taskEntity.setProject(project);
 		taskEntity.setName(dto.getName());
-		taskEntity.setStatus("OPEN");
+		taskEntity.setStatus(dto.getStatus());
 		taskEntity.setUser(user);
 		taskEntity.setDescription(dto.getDescription());
 		return taskEntity;

@@ -10,6 +10,8 @@ import de.tobias.tasktracker.dto.TaskResponseDto;
 import de.tobias.tasktracker.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,6 +46,37 @@ public class TaskService {
 		final Optional<TaskEntity> result = repository.findById(id);
 		if (result.isPresent()) {
 			return converter.entityToResponseDto(result.get());
+		} else {
+			throw new TaskNotFoundException("Task with id " + id + " not found");
+		}
+	}
+
+	public TaskResponseDto updateTaskById(UUID id, TaskRequestDto taskDto) {
+		final Optional<TaskEntity> result = repository.findById(id);
+		if (result.isPresent()) {
+			final TaskEntity oldEntity = result.get();
+
+			if (!oldEntity.getProject().getId().equals(taskDto.getProjectId())) {
+				final ProjectEntity project = projectService.getProjectEntityById(taskDto.getProjectId());
+				oldEntity.setProject(project);
+			}
+			final UUID oldUserId = oldEntity.getUser() == null ? null : oldEntity.getUser().getId();
+			final UUID newUserId = taskDto.getUserId();
+			if (!Objects.equals(oldUserId, newUserId)) {
+				if (newUserId != null) {
+					final AppUserEntity user = userService.getUserEntityById(taskDto.getUserId());
+					oldEntity.setUser(user);
+				} else {
+					oldEntity.setUser(null);
+				}
+			}
+
+			oldEntity.setName(taskDto.getName());
+			oldEntity.setDescription(taskDto.getDescription());
+			oldEntity.setStatus(taskDto.getStatus());
+			oldEntity.setUpdatedAt(Instant.now());
+			final TaskEntity updatedEntity = repository.save(oldEntity);
+			return converter.entityToResponseDto(updatedEntity);
 		} else {
 			throw new TaskNotFoundException("Task with id " + id + " not found");
 		}

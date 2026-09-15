@@ -1,5 +1,6 @@
 package de.tobias.tasktracker.database.entity;
 
+import de.tobias.tasktracker.dto.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,7 +25,8 @@ public class TaskEntity {
 	private String name;
 
 	@NotNull
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private TaskStatus status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "app_user_id")

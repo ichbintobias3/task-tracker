@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler({ ProjectNotFoundException.class, TaskNotFoundException.class, UserNotFoundException.class })
-	public ExceptionDto handleException(ProjectNotFoundException exception) {
+	public ExceptionDto handleNotFoundException(RuntimeException exception) {
 		ExceptionDto dto = new ExceptionDto();
 		dto.setTimestamp(Instant.now());
 		dto.setStatus(HttpStatus.NOT_FOUND.value());
