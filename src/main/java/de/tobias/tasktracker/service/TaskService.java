@@ -5,15 +5,15 @@ import de.tobias.tasktracker.database.entity.AppUserEntity;
 import de.tobias.tasktracker.database.entity.ProjectEntity;
 import de.tobias.tasktracker.database.entity.TaskEntity;
 import de.tobias.tasktracker.database.repository.TaskRepository;
+import de.tobias.tasktracker.database.specification.TaskSpecification;
 import de.tobias.tasktracker.dto.TaskRequestDto;
 import de.tobias.tasktracker.dto.TaskResponseDto;
+import de.tobias.tasktracker.dto.TaskStatus;
 import de.tobias.tasktracker.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class TaskService {
@@ -80,5 +80,15 @@ public class TaskService {
 		} else {
 			throw new TaskNotFoundException("Task with id " + id + " not found");
 		}
+	}
+
+	public List<TaskResponseDto> getTasksByFilter(UUID projectId, UUID userId, Boolean isUnassigned, TaskStatus status) {
+		final List<TaskEntity> results = repository.findAll(TaskSpecification.allFilters(projectId, userId, isUnassigned, status));
+
+		final List<TaskResponseDto> dtos = new ArrayList<>();
+		for (final TaskEntity taskEntity : results) {
+			dtos.add(converter.entityToResponseDto(taskEntity));
+		}
+		return dtos;
 	}
 }
