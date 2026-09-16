@@ -10,6 +10,9 @@ import de.tobias.tasktracker.dto.TaskRequestDto;
 import de.tobias.tasktracker.dto.TaskResponseDto;
 import de.tobias.tasktracker.dto.TaskStatus;
 import de.tobias.tasktracker.exception.TaskNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -82,13 +85,10 @@ public class TaskService {
 		}
 	}
 
-	public List<TaskResponseDto> getTasksByFilter(UUID projectId, UUID userId, Boolean isUnassigned, TaskStatus status) {
-		final List<TaskEntity> results = repository.findAll(TaskSpecification.allFilters(projectId, userId, isUnassigned, status));
+	public Page<TaskResponseDto> getTasksByFilter(UUID projectId, UUID userId, Boolean isUnassigned, TaskStatus status, Pageable pageable) {
+		final Page<TaskEntity> results = repository.findAll(TaskSpecification.allFilters(projectId, userId, isUnassigned, status), pageable);
 
-		final List<TaskResponseDto> dtos = new ArrayList<>();
-		for (final TaskEntity taskEntity : results) {
-			dtos.add(converter.entityToResponseDto(taskEntity));
-		}
-		return dtos;
+		return results
+				.map(converter::entityToResponseDto);
 	}
 }
