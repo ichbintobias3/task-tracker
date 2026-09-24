@@ -39,5 +39,6 @@ public class TaskCommentEntity {
 
 	public TaskCommentEntity() {
 		this.id = UUID.randomUUID();
+		this.createdAt = Instant.now();
 	}
 }

@@ -30,5 +30,6 @@ public class AppUserEntity {
 
 	public AppUserEntity() {
 		this.id = UUID.randomUUID();
+		this.createdAt = Instant.now();
 	}
 }
